@@ -5,7 +5,7 @@ import java.net.*;
 
 public class ServerThread extends Thread {
     private Socket sock;
-    private String value;
+    private String response;
     private BufferedReader in;
     private PrintWriter out;
     private int sum = 0;
@@ -28,37 +28,37 @@ public class ServerThread extends Thread {
             String[] arr = request.split(":");
 
             if (arr[1].equals("POZDRAV")) {
-                value = "POZDRAV OD SERVERA";
+                response = "POZDRAV OD SERVERA";
             } else {
-                String[] nums = arr[2].split(" ");
+                String[] numbers = arr[2].split(" ");
                 if (!arr[2].equals("") && arr[3].equals(",,")) {
-                    value = "Nema operacije!!!";
+                    response = "Nema operacije!!!";
                 } else if (arr[2].equals("") && !arr[3].equals(",,")) {
-                    value = "Nema brojeva!!!";
+                    response = "Nema brojeva!!!";
                 } else if (arr[2].equals("")) {
-                    value = "Nema brojeva!!!Nema operacije!!!";
+                    response = "Nema brojeva!!!Nema operacije!!!";
                 } else if (arr[3].equals("ZBIR,")) {
-                    for (String i : nums) {
+                    for (String i : numbers) {
                         sum += Integer.parseInt(i);
                     }
-                    value = "ZBIR JE " + sum;
+                    response = "ZBIR JE " + sum;
                 } else if (arr[3].equals(",PROIZVOD,")) {
-                    for (String i : nums) {
+                    for (String i : numbers) {
                         productOfMultiplication *= Integer.parseInt(i);
                     }
-                    value = "PROIZVOD JE " + productOfMultiplication;
+                    response = "PROIZVOD JE " + productOfMultiplication;
                 } else if ((arr[3].equals("ZBIR,PROIZVOD,"))) {
-                    for (String i : nums) {
+                    for (String i : numbers) {
                         sum += Integer.parseInt(i);
                         productOfMultiplication *= Integer.parseInt(i);
                     }
-                    value = "ZBIR JE " + sum + " PROIZVOD JE  " + productOfMultiplication;
+                    response = "ZBIR JE " + sum + " PROIZVOD JE  " + productOfMultiplication;
                 }
             }
 
             Server.area.setText(Server.area.getText() + "Klijentov zahtev:\n" + request + "\n");
-            Server.area.setText(Server.area.getText() + "[odgovor]" + value + "\n");
-            out.println(value);
+            Server.area.setText(Server.area.getText() + "[odgovor]" + response + "\n");
+            out.println(response);
             in.close();
             out.close();
             sock.close();

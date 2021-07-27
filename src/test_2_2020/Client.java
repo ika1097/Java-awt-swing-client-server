@@ -8,25 +8,25 @@ import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Klijent extends JFrame implements ActionListener {
+public class Client extends JFrame implements ActionListener {
     public static final int TCP_PORT = 9000;
     public int num = 1;
-    public String name = ",,";
+    public String request = ",,";
     public static JTextArea area = new JTextArea();
     public static JScrollPane scrollPane = new JScrollPane(area);
     SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
     public Date nowTime = new Date();
     JLabel label = new JLabel(formatter.format(nowTime));
-    JTextField field = new JTextField();
+    JTextField numField = new JTextField();
 
     ButtonGroup group = new ButtonGroup();
-    JRadioButton rb1 = new JRadioButton("Pozdrav", true);
-    JRadioButton rb2 = new JRadioButton("Brojevi", false);
+    JRadioButton rbHello = new JRadioButton("Pozdrav", true);
+    JRadioButton rbNumbers = new JRadioButton("Brojevi", false);
 
-    JCheckBox cb1 = new JCheckBox("ZBIR");
-    JCheckBox cb2 = new JCheckBox("PROIZVOD");
+    JCheckBox cbSum = new JCheckBox("ZBIR");
+    JCheckBox cbMultiplication = new JCheckBox("PROIZVOD");
 
-    public Klijent() {
+    public Client() {
         super();
         setTitle("KLIJENT");
         setSize(500, 800);
@@ -35,85 +35,85 @@ public class Klijent extends JFrame implements ActionListener {
         GridBagConstraints c = new GridBagConstraints();
 
         label.setForeground(Color.red);
-        Tajmer();
+        Timer();
 
-        JPanel panel1 = new JPanel();
-        panel1.setBackground(Color.white);
-        panel1.add(label);
+        JPanel timerPanel = new JPanel();
+        timerPanel.setBackground(Color.white);
+        timerPanel.add(label);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
-        add(panel1, c);
+        add(timerPanel, c);
 
-        JPanel panel2 = new JPanel();
+        JPanel textPanelName = new JPanel();
         JLabel student = new JLabel("ILIJA RADONJIC RT-2/18");
         student.setForeground(Color.YELLOW);
-        panel2.setBackground(Color.BLUE);
-        panel2.add(student);
+        textPanelName.setBackground(Color.BLUE);
+        textPanelName.add(student);
         c.gridx = 0;
         c.gridy = 1;
-        add(panel2, c);
+        add(textPanelName, c);
 
-        JPanel panel3 = new JPanel();
+        JPanel textPanelRequest = new JPanel();
         JLabel request = new JLabel("ZAHTEV");
         request.setForeground(Color.blue);
-        panel3.setBackground(Color.green);
-        panel3.add(request);
+        textPanelRequest.setBackground(Color.green);
+        textPanelRequest.add(request);
         c.gridx = 0;
         c.gridy = 2;
-        add(panel3, c);
+        add(textPanelRequest, c);
 
-        JPanel panel4 = new JPanel();
-        rb1.addItemListener(new radiobutton());
-        rb2.addItemListener(new radiobutton());
-        group.add(rb1);
-        group.add(rb2);
-        panel4.add(rb1);
-        panel4.add(rb2);
+        JPanel radioButtonPanel = new JPanel();
+        rbHello.addItemListener(new radiobutton());
+        rbNumbers.addItemListener(new radiobutton());
+        group.add(rbHello);
+        group.add(rbNumbers);
+        radioButtonPanel.add(rbHello);
+        radioButtonPanel.add(rbNumbers);
         c.gridx = 0;
         c.gridy = 3;
-        add(panel4, c);
+        add(radioButtonPanel, c);
 
-        JPanel panel5 = new JPanel();
+        JPanel textPanel = new JPanel();
         JLabel text = new JLabel("NIZ BROJEVA ZA SLANJE NA SERVER");
-        panel5.add(text);
+        textPanel.add(text);
         c.gridx = 0;
         c.gridy = 4;
-        add(panel5, c);
+        add(textPanel, c);
 
-        JPanel panel6 = new JPanel();
-        field.setPreferredSize(new Dimension(200, 30));
-        panel6.add(field);
+        JPanel numberPanel = new JPanel();
+        numField.setPreferredSize(new Dimension(200, 30));
+        numberPanel.add(numField);
         c.gridx = 0;
         c.gridy = 5;
-        add(panel6, c);
+        add(numberPanel, c);
 
-        JPanel panel7 = new JPanel();
-        cb1.addItemListener(new checkbox());
-        cb2.addItemListener(new checkbox());
-        panel7.add(cb1);
-        panel7.add(cb2);
+        JPanel operationCheckboxPanel = new JPanel();
+        cbSum.addItemListener(new checkbox());
+        cbMultiplication.addItemListener(new checkbox());
+        operationCheckboxPanel.add(cbSum);
+        operationCheckboxPanel.add(cbMultiplication);
         c.gridx = 0;
         c.gridy = 6;
-        add(panel7, c);
+        add(operationCheckboxPanel, c);
 
-        JButton btn = new JButton("DUGME ZA SLANJE ZAHTEVA NA SERVER");
-        btn.setBackground(Color.red);
-        btn.setForeground(Color.YELLOW);
-        btn.addActionListener(this);
+        JButton submit = new JButton("DUGME ZA SLANJE ZAHTEVA NA SERVER");
+        submit.setBackground(Color.red);
+        submit.setForeground(Color.YELLOW);
+        submit.addActionListener(this);
         c.gridx = 0;
         c.gridy = 8;
-        add(btn, c);
+        add(submit, c);
 
-        JPanel panel8 = new JPanel();
+        JPanel responsePanel = new JPanel();
         JLabel responseLabel = new JLabel("ODGOVORI SERVERA");
-        panel8.setBackground(Color.YELLOW);
+        responsePanel.setBackground(Color.YELLOW);
         responseLabel.setForeground(Color.blue);
-        panel8.add(responseLabel);
+        responsePanel.add(responseLabel);
         c.gridx = 0;
         c.gridy = 9;
-        add(panel8, c);
+        add(responsePanel, c);
 
         c.gridx = 0;
         c.gridy = 10;
@@ -121,7 +121,7 @@ public class Klijent extends JFrame implements ActionListener {
         add(scrollPane, c);
     }
 
-    public void Tajmer() {
+    public void Timer() {
         Timer timer = new Timer(1000, e -> {
             nowTime = new Date();
             label.setText(formatter.format(nowTime));
@@ -142,14 +142,14 @@ public class Klijent extends JFrame implements ActionListener {
     class checkbox implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
             if (e.getSource() instanceof JCheckBox) {
-                if (cb1.isSelected())
-                    name = "ZBIR,";
-                if (cb2.isSelected())
-                    name = ",PROIZVOD,";
-                if (cb1.isSelected() && cb2.isSelected())
-                    name = "ZBIR,PROIZVOD,";
-                if (!cb1.isSelected() && !cb2.isSelected())
-                    name = ",,";
+                if (cbSum.isSelected())
+                    request = "ZBIR,";
+                if (cbMultiplication.isSelected())
+                    request = ",PROIZVOD,";
+                if (cbSum.isSelected() && cbMultiplication.isSelected())
+                    request = "ZBIR,PROIZVOD,";
+                if (!cbSum.isSelected() && !cbMultiplication.isSelected())
+                    request = ",,";
             }
         }
     }
@@ -166,7 +166,7 @@ public class Klijent extends JFrame implements ActionListener {
             if (num == 1) {
                 out.println(":POZDRAV");
             } else {
-                out.println(":BROJEVI:" + field.getText() + ":" + name);
+                out.println(":BROJEVI:" + numField.getText() + ":" + request);
             }
 
             String response = in.readLine();
@@ -181,7 +181,7 @@ public class Klijent extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        Klijent klijent = new Klijent();
-        klijent.setVisible(true);
+        Client client = new Client();
+        client.setVisible(true);
     }
 }
